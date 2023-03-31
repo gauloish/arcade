@@ -36,6 +36,9 @@ void update(int);
 
 canvas::frame image({0b11111111, 0b10000001, 0b10011001, 0b10010001, 0b10011101, 0b10111101, 0b10000001, 0b11111111});
 
+/**
+ * @brief Start game
+ */
 void start() {
     read();
     repos();
@@ -57,6 +60,9 @@ void start() {
     sense.set(0, 0);
 }
 
+/**
+ * @brief Read peripherals state
+ */
 void read() {
     left = things::left.read();
     bottom = things::right.read();
@@ -85,6 +91,9 @@ void read() {
     count = 1 + count % steps;
 }
 
+/**
+ * @brief Draw game in screen and display
+ */
 void draw() {
     things::frame.set(body, true);
 
@@ -98,6 +107,11 @@ void draw() {
     things::display.separator(false);
 }
 
+/**
+ * @brief Verify defeat
+ *
+ * @return defeat
+ */
 bool verify() {
     for (short index = 1; index < length; index++) {
         if (body[0] == body[index]) {
@@ -118,8 +132,16 @@ bool verify() {
     return false;
 }
 
+/**
+ * @brief Collision snake in itself
+ *
+ * @return If collision
+ */
 bool found() { return body[0] == food; }
 
+/**
+ * @brief Change food position
+ */
 void change() {
     while (true) {
         food.set(numerics::rand(0, 7), numerics::rand(0, 7));
@@ -140,6 +162,9 @@ void change() {
     }
 }
 
+/**
+ * @brief Update positions
+ */
 void repos() {
     if (count == steps) {
         short index = length - 1;
@@ -169,6 +194,11 @@ void repos() {
     }
 }
 
+/**
+ * @brief Update game state
+ *
+ * @param value Game level
+ */
 void update(int value) {
     level = value;
 
