@@ -1,72 +1,57 @@
-#include "utils.hpp"
-#include "things.hpp"
 #include "geometry.hpp"
+#include "things.hpp"
+#include "utils.hpp"
 
 #ifndef PONG_HPP
 #define PONG_HPP
 
 namespace pong {
-  geometry::object<3> left;
-  geometry::object<3> right;
+geometry::object<3> left;
+geometry::object<3> right;
 
-  geometry::point ball;
-  geometry::point sense;
+geometry::point ball;
+geometry::point sense;
 
-  short first{};
-  short second{};
-  short level{};
+short first{};
+short second{};
+short level{};
 
-  short steps{};
-  short count{};
+short steps{};
+short count{};
 
-  short one{};
-  short two{};
+short one{};
+short two{};
 
-  void start();
-  void read();
-  void draw();
-  void repos();
-  int collision();
-  bool verify();
-  void update(int);
+void start();
+void read();
+void draw();
+void repos();
+int collision();
+bool verify();
+void update(int);
 
-  canvas::frame image({
-    0b11111111,
-    0b10000001,
-    0b10000101,
-    0b10100101,
-    0b10100101,
-    0b10100001,
-    0b10000001,
-    0b11111111
-  });
+canvas::frame image({0b11111111, 0b10000001, 0b10000101, 0b10100101, 0b10100101, 0b10100001, 0b10000001, 0b11111111});
 
-  void start() {
+void start() {
     read();
     repos();
 
-    ball.set(
-      numerics::rand(3, 4),
-      numerics::rand(3, 4)
-    );
+    ball.set(numerics::rand(3, 4), numerics::rand(3, 4));
 
-    sense.set(
-      1 - 2 * numerics::rand(0, 1),
-      1 - 2 * numerics::rand(0, 1)
-    );
+    sense.set(1 - 2 * numerics::rand(0, 1), 1 - 2 * numerics::rand(0, 1));
 
     short one = 0;
     short two = 0;
-  }
+}
 
-  void read() {
+void read() {
     int limit = 5;
 
     if (level > 1) {
-      limit = 6;
+        limit = 6;
     }
     if (level > 2) {
-      limit = 7;
+        limit = 7;
     }
 
     first = things::first.read(0, limit);
@@ -74,9 +59,9 @@ namespace pong {
 
     steps = 20 - 4 * level;
     count = 1 + count % steps;
-  }
+}
 
-  void draw() {
+void draw() {
     things::frame.set(left, true);
     things::frame.set(right, true);
 
@@ -88,135 +73,126 @@ namespace pong {
     things::layer.set(3, two % 10);
 
     things::display.separator(true);
-  }
+}
 
-  void repos() {
+void repos() {
     for (byte index = 0; index < 3; index++) {
-      left[index].set(first + index, 0);
-      right[index].set(second + index, 7);
+        left[index].set(first + index, 0);
+        right[index].set(second + index, 7);
     }
 
     if (level > 1) {
-      left[2].set(first, 0);
-      right[2].set(second, 7);
+        left[2].set(first, 0);
+        right[2].set(second, 7);
     }
     if (level > 2) {
-      left[1].set(first, 0);
-      right[1].set(second, 7);
+        left[1].set(first, 0);
+        right[1].set(second, 7);
     }
 
     if (count == steps) {
-      int movement = collision();
+        int movement = collision();
 
-      switch (movement) {
-        case 0:
-          break;
-        case 1:
-          sense.set(
-            -sense.get(true),
-            sense.get(false)
-          );
-          break;
-        case 2:
-          sense.set(
-            sense.get(true),
-            -sense.get(false)
-          );
-          break;
-        case 3:
-          sense.set(
-            -sense.get(true),
-            -sense.get(false)
-          );
-          break;
-      }
+        switch (movement) {
+            case 0:
+                break;
+            case 1:
+                sense.set(-sense.get(true), sense.get(false));
+                break;
+            case 2:
+                sense.set(sense.get(true), -sense.get(false));
+                break;
+            case 3:
+                sense.set(-sense.get(true), -sense.get(false));
+                break;
+        }
 
-      ball.translate(sense);
+        ball.translate(sense);
     }
-  }
+}
 
-  int collision() {
+int collision() {
     byte line = ball.get(true);
     byte column = ball.get(false);
 
     int increase = 0;
 
     if (level > 1) {
-      increase = 1;
+        increase = 1;
     }
     if (level > 2) {
-      increase = 2;
+        increase = 2;
     }
 
     if (line == 0) {
-      if (column == 1 and first == 0) {
-        return 3;
-      }
-      if (column == 6 and second == 0) {
-        return 3;
-      }
+        if (column == 1 and first == 0) {
+            return 3;
+        }
+        if (column == 6 and second == 0) {
+            return 3;
+        }
 
-      return 1;
+        return 1;
     }
     if (line == 7) {
-      if (column == 1 and first == 5 + increase) {
-        return 3;
-      }
-      if (column == 6 and second == 5 + increase) {
-        return 3;
-      }
+        if (column == 1 and first == 5 + increase) {
+            return 3;
+        }
+        if (column == 6 and second == 5 + increase) {
+            return 3;
+        }
 
-      return 1;
+        return 1;
     }
 
     if (column == 1) {
-      if (first > line) {
-        return 0;
-      }
-      if (first + 2 < line + increase) {
-        return 0;
-      }
+        if (first > line) {
+            return 0;
+        }
+        if (first + 2 < line + increase) {
+            return 0;
+        }
 
-      return 2;
+        return 2;
     }
     if (column == 6) {
-      if (second > line) {
-        return 0;
-      }
-      if (second + 2 < line + increase) {
-        return 0;
-      }
+        if (second > line) {
+            return 0;
+        }
+        if (second + 2 < line + increase) {
+            return 0;
+        }
 
-      return 2;
+        return 2;
     }
 
     return 0;
-  }
+}
 
-  bool verify() {
+bool verify() {
     if (count == steps) {
-      byte column = ball.get(false);
+        byte column = ball.get(false);
 
-      if (column == 0) {
-        two++;
-        return true;
-      }
-      if (column == 7) {
-        one++;
-        return true;
-      }
+        if (column == 0) {
+            two++;
+            return true;
+        }
+        if (column == 7) {
+            one++;
+            return true;
+        }
     }
 
     return false;
-  }
+}
 
-  void update(int value) {
+void update(int value) {
     level = value;
 
     read();
     repos();
     draw();
-  }
 }
+}  // namespace pong
 
 #endif
