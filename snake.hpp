@@ -137,7 +137,9 @@ bool verify() {
  *
  * @return If collision
  */
-bool found() { return body[0] == food; }
+bool found() {  //
+    return body[0] == food;
+}
 
 /**
  * @brief Change food position

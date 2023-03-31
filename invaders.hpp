@@ -79,7 +79,9 @@ void read() {
  *
  * @return Evade
  */
-int evade() { return bullet.get(true) == -1; }
+int evade() {  //
+    return bullet.get(true) == -1;
+}
 
 /**
  * @brief Verify defeat

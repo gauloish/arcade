@@ -42,7 +42,9 @@ class point {
      * @param value Coordinate (false to x, true to y)
      * @return Coordinate value
      */
-    short get(bool value) const { return value ? line : column; }
+    short get(bool value) const {  //
+        return value ? line : column;
+    }
 
     /**
      * @brief Set point position
@@ -73,7 +75,9 @@ class point {
      * @param other Other point to compare
      * @return Value comparation
      */
-    bool operator==(const point &other) const { return this->line == other.line && this->column == other.column; }
+    bool operator==(const point &other) const {  //
+        return this->line == other.line && this->column == other.column;
+    }
 
     /**
      * @brief Translate point position
@@ -145,21 +149,27 @@ class object {
      *
      * @return [TODO:return]
      */
-    short length() const { return size; }
+    short length() const {  //
+        return size;
+    }
 
     /**
      * @brief Return pointer to begin of points array
      *
      * @return Pointer to begin of points array
      */
-    point *begin() const { return dots; }
+    point *begin() const {  //
+        return dots;
+    }
 
     /**
      * @brief Return pointer to end of points array
      *
      * @return Pointer to end of points array
      */
-    point *end() const { return dots + size; }
+    point *end() const {  //
+        return dots + size;
+    }
 
     /**
      * @brief Translate object position
@@ -191,7 +201,9 @@ class object {
      * @param index Position in points array
      * @return Point in points array
      */
-    point &operator[](short index) { return dots[index]; }
+    point &operator[](short index) {  //
+        return dots[index];
+    }
 };
 
 /**

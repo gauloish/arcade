@@ -17,7 +17,9 @@ void seed() {
  * @param maximum Greater value in range
  * @return Generated random integer number
  */
-long rand(long minimum, long maximum) { return random(minimum, maximum + 1); }
+long rand(long minimum, long maximum) {  //
+    return random(minimum, maximum + 1);
+}
 
 /**
  * @brief Reverse binary representation of a number

@@ -18,7 +18,9 @@ class frame {
     /**
      * @brief Initialize frame with default values
      */
-    frame() { clear(); }
+    frame() {  //
+        clear();
+    }
 
     /**
      * @brief Initialize frame with other frame array
@@ -80,7 +82,9 @@ class frame {
      * @param column Horizontal position
      * @param value New Value to pixel
      */
-    void set(short line, short column, bool value) { pattern[line] = numerics::set(pattern[line], column, value); }
+    void set(short line, short column, bool value) {  //
+        pattern[line] = numerics::set(pattern[line], column, value);
+    }
 
     /**
      * @brief Set pixel value in frame
@@ -124,14 +128,18 @@ class frame {
      *
      * @return Pointer to begin of frame array
      */
-    short *begin() const { return pattern; }
+    short *begin() const {  //
+        return pattern;
+    }
 
     /**
      * @brief Return pointer to end of frame array
      *
      * @return Pointer to end of frame array
      */
-    short *end() const { return pattern + 8; }
+    short *end() const {  //
+        return pattern + 8;
+    }
 
     /**
      * @brief Implementation to [] operator to access values in frame array
@@ -139,7 +147,9 @@ class frame {
      * @param index Array position
      * @return Array value
      */
-    short &operator[](short index) { return pattern[index]; }
+    short &operator[](short index) {  //
+        return pattern[index];
+    }
 };
 
 /**
@@ -155,7 +165,9 @@ class layer {
     /**
      * @brief Initialize layer with default values
      */
-    layer() { clear(); }
+    layer() {  //
+        clear();
+    }
 
     /**
      * @brief Initialize frame with other values array
@@ -199,21 +211,27 @@ class layer {
      * @param index Position in array
      * @param value Value to set
      */
-    void set(short index, short value) { pattern[index] = value; }
+    void set(short index, short value) {  //
+        pattern[index] = value;
+    }
 
     /**
      * @brief Return pointer to begin of layer array
      *
      * @return Pointer to begin of layer array
      */
-    short *begin() const { return pattern; }
+    short *begin() const {  //
+        return pattern;
+    }
 
     /**
      * @brief Return pointer to end of layer array
      *
      * @return Pointer to end of layer array
      */
-    short *end() const { return pattern + 8; }
+    short *end() const {  //
+        return pattern + 8;
+    }
 
     /**
      * @brief Implementation to [] operator to access values in layer array
@@ -221,7 +239,9 @@ class layer {
      * @param index Array position
      * @return Array value
      */
-    short &operator[](short index) { return pattern[index]; }
+    short &operator[](short index) {  //
+        return pattern[index];
+    }
 };
 }  // namespace canvas
 

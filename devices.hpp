@@ -76,12 +76,16 @@ class screen {
      *
      * @param pattern Frame to be rendered
      */
-    void render(const canvas::frame &&pattern) const { render(pattern); }
+    void render(const canvas::frame &&pattern) const {  //
+        render(pattern);
+    }
 
     /**
      * @brief Clear screen
      */
-    void clear() const { render(canvas::frame()); }
+    void clear() const {  //
+        render(canvas::frame());
+    }
 
     /**
      * @brief Change screen brightness
@@ -131,7 +135,9 @@ class display {
     /**
      * @brief Wait microseconds
      */
-    void wait() const { delayMicroseconds(time); }
+    void wait() const {  //
+        delayMicroseconds(time);
+    }
 
     /**
      * @brief Start to writing data in display
@@ -226,19 +232,25 @@ class display {
      *
      * @param segments Layer to be rendered
      */
-    void render(const canvas::layer &&segments) const { render(segments); }
+    void render(const canvas::layer &&segments) const {  //
+        render(segments);
+    }
 
     /**
      * @brief Clear display
      */
-    void clear() const { render(canvas::layer()); }
+    void clear() const {  //
+        render(canvas::layer());
+    }
 
     /**
      * @brief Enable separator
      *
      * @param value Enable value
      */
-    void separator(bool value) { dots = value; }
+    void separator(bool value) {  //
+        dots = value;
+    }
 
     /**
      * @brief Enable and set brightness in display
@@ -313,7 +325,9 @@ class button {
      *
      * @param input Input pin
      */
-    button(int input) : input(input) { pinMode(input, INPUT); }
+    button(int input) : input(input) {  //
+        pinMode(input, INPUT);
+    }
 
     /**
      * @brief Read state button
@@ -342,7 +356,9 @@ class buzzer {
      *
      * @param input Input pin
      */
-    buzzer(int input) : input(input) { pinMode(input, OUTPUT); }
+    buzzer(int input) : input(input) {  //
+        pinMode(input, OUTPUT);
+    }
 
     /**
      * @brief Play a square wave in a frequency by a time
@@ -361,7 +377,9 @@ class buzzer {
     /**
      * @brief Stop playing
      */
-    void stop() { noTone(input); }
+    void stop() {  //
+        noTone(input);
+    }
 };
 }  // namespace devices
 

@@ -77,7 +77,9 @@ void clear() {
 /**
  * @brief Start game
  */
-void start() { started[choice](); }
+void start() {  //
+    started[choice]();
+}
 
 /**
  * @brief Update game state
@@ -95,7 +97,9 @@ void update() {
  *
  * @return Defeat
  */
-bool verify() { return verified[choice](); }
+bool verify() {  //
+    return verified[choice]();
+}
 
 /**
  * @brief Selector to select game
