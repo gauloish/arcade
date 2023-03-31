@@ -113,7 +113,7 @@ bool verify() {
 }
 
 /**
- * @brief Update position
+ * @brief Update positions
  */
 void repos() {
     if (shot) {
