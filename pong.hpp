@@ -32,6 +32,9 @@ void update(int);
 
 canvas::frame image({0b11111111, 0b10000001, 0b10000101, 0b10100101, 0b10100101, 0b10100001, 0b10000001, 0b11111111});
 
+/**
+ * @brief Start game
+ */
 void start() {
     read();
     repos();
@@ -44,6 +47,9 @@ void start() {
     short two = 0;
 }
 
+/**
+ * @brief Read peripherals state
+ */
 void read() {
     int limit = 5;
 
@@ -61,6 +67,9 @@ void read() {
     count = 1 + count % steps;
 }
 
+/**
+ * @brief Draw game in screen and display
+ */
 void draw() {
     things::frame.set(left, true);
     things::frame.set(right, true);
@@ -75,6 +84,9 @@ void draw() {
     things::display.separator(true);
 }
 
+/**
+ * @brief Update positions
+ */
 void repos() {
     for (byte index = 0; index < 3; index++) {
         left[index].set(first + index, 0);
@@ -111,6 +123,11 @@ void repos() {
     }
 }
 
+/**
+ * @brief Verify collision
+ *
+ * @return collision
+ */
 int collision() {
     byte line = ball.get(true);
     byte column = ball.get(false);
@@ -169,6 +186,11 @@ int collision() {
     return 0;
 }
 
+/**
+ * @brief Verify defeat
+ *
+ * @return defeat
+ */
 bool verify() {
     if (count == steps) {
         byte column = ball.get(false);
@@ -186,6 +208,11 @@ bool verify() {
     return false;
 }
 
+/**
+ * @brief Update game state
+ *
+ * @param value Game level
+ */
 void update(int value) {
     level = value;
 
