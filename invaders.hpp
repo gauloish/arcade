@@ -32,6 +32,9 @@ void update(int);
 
 canvas::frame image({0b11111111, 0b10000001, 0b10011101, 0b10001001, 0b10010001, 0b10111001, 0b10000001, 0b11111111});
 
+/**
+ * @brief Start game
+ */
 void start() {
     read();
     repos();
@@ -48,6 +51,9 @@ void start() {
     shot = false;
 }
 
+/**
+ * @brief Read peripherals state
+ */
 void read() {
     position = things::first.read(1, 6);
 
@@ -68,15 +74,24 @@ void read() {
     count = 1 + count % steps;
 }
 
+/**
+ * @brief Verify if evade
+ *
+ * @return Evade
+ */
 int evade() { return bullet.get(true) == -1; }
 
+/**
+ * @brief Verify defeat
+ *
+ * @return defeat
+ */
 bool verify() {
     short posBullet[] = {bullet.get(true), bullet.get(false)};
 
     for (int first = 0; first < 4; first++) {
         for (int second = 0; second < 4; second++) {
             short posShip[] = {ship[first].get(true), ship[first].get(false)};
-
             short posEnemy[] = {enemy[second].get(true), enemy[second].get(false)};
 
             if (posBullet[0] == posEnemy[0] and posBullet[1] == posEnemy[1]) {
@@ -97,6 +112,9 @@ bool verify() {
     return false;
 }
 
+/**
+ * @brief Update position
+ */
 void repos() {
     if (shot) {
         if (count % (steps / 2) == 0) {
@@ -118,6 +136,9 @@ void repos() {
     ship[3].set(7, position + 1);
 }
 
+/**
+ * @brief Draw game in screen and display
+ */
 void draw() {
     things::frame.set(ship, true);
     things::frame.set(enemy, true);
@@ -131,6 +152,11 @@ void draw() {
     things::display.separator(true);
 }
 
+/**
+ * @brief Update game state
+ *
+ * @param value Game level
+ */
 void update(int value) {
     level = value;
 
