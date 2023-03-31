@@ -1,9 +1,9 @@
 #include "engine.hpp"
 
 void setup() {
-  engine::init();
+	engine::init();
 }
 
 void loop() {
-  engine::run();
+	engine::run();
 }
