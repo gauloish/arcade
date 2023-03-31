@@ -1,12 +1,12 @@
-#include "utils.hpp"
 #include "canvas.hpp"
+#include "utils.hpp"
 
 #ifndef DEVICES_HPP
 #define DEVICES_HPP
 
 namespace devices {
-  class screen {
-  private:
+class screen {
+   private:
     const int input;
     const int clock;
     const int load;
@@ -18,57 +18,49 @@ namespace devices {
     const byte shutdown{0xC};
     const byte test{0xF};
 
-  public:
-    screen(int input, int clock, int load) :
-      input(input),
-      clock(clock),
-      load(load)
-    {
-      pinMode(input, OUTPUT);
-      pinMode(clock, OUTPUT);
-      pinMode(load, OUTPUT);
+   public:
+    screen(int input, int clock, int load) : input(input), clock(clock), load(load) {
+        pinMode(input, OUTPUT);
+        pinMode(clock, OUTPUT);
+        pinMode(load, OUTPUT);
 
-      control(mode, 0x00);      // decode mode
-      control(test, 0x00);      // display test
-      control(limit, 0x07);     // scan limit
-      control(shutdown, 0x01);  // shutdown
-      control(intensity, 0x08); // intensity
+        control(mode, 0x00);       // decode mode
+        control(test, 0x00);       // display test
+        control(limit, 0x07);      // scan limit
+        control(shutdown, 0x01);   // shutdown
+        control(intensity, 0x08);  // intensity
 
-      clear();
+        clear();
     }
 
     void control(byte adress, byte data) const {
-      digitalWrite(load, false);
-      shiftOut(input, clock, MSBFIRST, adress);
-      shiftOut(input, clock, MSBFIRST, data);
-      digitalWrite(load, true);
+        digitalWrite(load, false);
+        shiftOut(input, clock, MSBFIRST, adress);
+        shiftOut(input, clock, MSBFIRST, data);
+        digitalWrite(load, true);
     }
 
     void render(const canvas::frame &pattern) const {
-      short index = short();
+        short index = short();
 
-      for (const short &line: pattern) {
-        control(++index, numerics::reverse(line));
-      }
+        for (const short &line : pattern) {
+            control(++index, numerics::reverse(line));
+        }
     }
 
-    void render(const canvas::frame &&pattern) const {
-      render(pattern);
-    }
+    void render(const canvas::frame &&pattern) const { render(pattern); }
 
-    void clear() const {
-      render(canvas::frame());
-    }
+    void clear() const { render(canvas::frame()); }
 
     void brightness(byte bright) const {
-      bright = map(bright, 0, 100, 1, 15);
+        bright = map(bright, 0, 100, 1, 15);
 
-      control(intensity, bright);
+        control(intensity, bright);
     }
-  };
+};
 
-  class display {
-  private:
+class display {
+   private:
     const int input;
     const int clock;
     const int time;
@@ -79,176 +71,161 @@ namespace devices {
 
     bool dots{false};
 
-  public:
-    display(int input, int clock, int time) :
-      input(input),
-      clock(clock),
-      time(time)
-    {
-      pinMode(input, INPUT);
-      pinMode(clock, INPUT);
+   public:
+    display(int input, int clock, int time) : input(input), clock(clock), time(time) {
+        pinMode(input, INPUT);
+        pinMode(clock, INPUT);
 
-      digitalWrite(input, LOW);
-      digitalWrite(clock, LOW);
+        digitalWrite(input, LOW);
+        digitalWrite(clock, LOW);
     }
 
-    void wait() const {
-      delayMicroseconds(time);
-    }
+    void wait() const { delayMicroseconds(time); }
 
     void start() const {
-      pinMode(input, OUTPUT); wait();
+        pinMode(input, OUTPUT);
+        wait();
     }
 
     void stop() const {
-      pinMode(input, OUTPUT); wait();
-      pinMode(clock, INPUT);  wait();
-      pinMode(input, INPUT);  wait();
-    }
-
-    void write(byte data) const {
-      byte condition = 8;
-
-      while (condition--) {
-        pinMode(clock, OUTPUT);
-        wait();
-
-        if (data & 1)
-          pinMode(input, INPUT);
-        else
-          pinMode(input, OUTPUT);
-
+        pinMode(input, OUTPUT);
         wait();
         pinMode(clock, INPUT);
         wait();
+        pinMode(input, INPUT);
+        wait();
+    }
 
-        data = data >> 1;
-      }
+    void write(byte data) const {
+        byte condition = 8;
 
-      pinMode(clock, OUTPUT);
-      pinMode(input, INPUT);
-      wait();
+        while (condition--) {
+            pinMode(clock, OUTPUT);
+            wait();
 
-      pinMode(clock, INPUT);
-      wait();
+            if (data & 1)
+                pinMode(input, INPUT);
+            else
+                pinMode(input, OUTPUT);
 
-      bool value = digitalRead(input);
+            wait();
+            pinMode(clock, INPUT);
+            wait();
 
-      if (value) {
-        pinMode(input, OUTPUT);
-      }
+            data = data >> 1;
+        }
 
-      wait();
-      pinMode(clock, OUTPUT);
-      wait();
+        pinMode(clock, OUTPUT);
+        pinMode(input, INPUT);
+        wait();
+
+        pinMode(clock, INPUT);
+        wait();
+
+        bool value = digitalRead(input);
+
+        if (value) {
+            pinMode(input, OUTPUT);
+        }
+
+        wait();
+        pinMode(clock, OUTPUT);
+        wait();
     }
 
     void render(const canvas::layer &segments) const {
-      start();
-      write(first);
-      stop();
+        start();
+        write(first);
+        stop();
 
-      start();
-      write(second);
+        start();
+        write(second);
 
-      for (short &segment: segments) {
-        byte data = numerics::encode(segment);
+        for (short &segment : segments) {
+            byte data = numerics::encode(segment);
 
-        if (dots) {
-          data = data | (1 << 7);
+            if (dots) {
+                data = data | (1 << 7);
+            }
+
+            write(data);
         }
 
-        write(data);
-      }
-
-      stop();
+        stop();
     }
 
-    void render(const canvas::layer &&segments) const {
-      render(segments);
-    }
+    void render(const canvas::layer &&segments) const { render(segments); }
 
-    void clear() const {
-      render(canvas::layer());
-    }
+    void clear() const { render(canvas::layer()); }
 
-    void separator(bool value) {
-      dots = value;
-    }
+    void separator(bool value) { dots = value; }
 
     void brightness(byte bright, bool enable = true) const {
-      bright = map(bright, 0, 100, 0, 7);
+        bright = map(bright, 0, 100, 0, 7);
 
-      if (enable) {
-        bright = ((bright & 0b0111) | 0b1000) & 0b1111;
-      }
-      else {
-        bright = ((bright & 0b0111) | 0b0000) & 0b1111;
-      }
+        if (enable) {
+            bright = ((bright & 0b0111) | 0b1000) & 0b1111;
+        } else {
+            bright = ((bright & 0b0111) | 0b0000) & 0b1111;
+        }
 
-      start();
-      write(third + bright);
-      stop();
+        start();
+        write(third + bright);
+        stop();
     }
-  };
+};
 
-  class knob {
-  private:
+class knob {
+   private:
     const int input;
 
     int count;
 
-  public:
+   public:
     knob(int input) : input(input) {
-      pinMode(input, INPUT);
+        pinMode(input, INPUT);
 
-      count = 0;
+        count = 0;
     }
 
     int read(short inferior = 0, short superior = 100) {
-      short value = analogRead(input);
+        short value = analogRead(input);
 
-      return map(value, 0, 1023, inferior, superior);
+        return map(value, 0, 1023, inferior, superior);
     }
-  };
+};
 
-  class button {
-  private:
+class button {
+   private:
     const int input;
-  
-  public:
-    button(int input) : input(input) {
-      pinMode(input, INPUT);
-    }
+
+   public:
+    button(int input) : input(input) { pinMode(input, INPUT); }
 
     bool read() const {
-      bool value = digitalRead(input);
+        bool value = digitalRead(input);
 
-      return value;
+        return value;
     }
-  };
+};
 
-  class buzzer {
-  private:
+class buzzer {
+   private:
     const int input;
 
-  public:
-    buzzer(int input) : input(input) {
-      pinMode(input, OUTPUT);
-    }
+   public:
+    buzzer(int input) : input(input) { pinMode(input, OUTPUT); }
 
     void start(int frequency, int duration = 0) {
-      tone(input, frequency);
+        tone(input, frequency);
 
-      if (duration) {
-        delay(duration);
-      }
+        if (duration) {
+            delay(duration);
+        }
     }
 
-    void stop() {
-      noTone(input);
-    }
-  };
-}
+    void stop() { noTone(input); }
+};
+}  // namespace devices
 
 #endif
