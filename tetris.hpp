@@ -34,6 +34,9 @@ void update(int);
 
 canvas::frame image({0b11111111, 0b10000001, 0b10100001, 0b10100001, 0b10101101, 0b10101101, 0b10000001, 0b11111111});
 
+/**
+ * @brief Start game
+ */
 void start() {
     numerics::seed();
 
@@ -42,6 +45,9 @@ void start() {
     change = true;
 }
 
+/**
+ * @brief Generate pieces
+ */
 void generate() {
     const static short lines[7][4] = {{0, 0, 0, 0}, {0, 0, 0, 1}, {0, 0, 0, 1}, {0, 0, 0, 1},
                                       {0, 0, 1, 1}, {1, 0, 0, 1}, {0, 0, 1, 1}};
@@ -56,6 +62,9 @@ void generate() {
     block = geometry::orthos(block, block[1], 4 - rotate[0]);
 }
 
+/**
+ * @brief Read peripherals state
+ */
 void read() {
     press = bool(things::left.read() || things::right.read() || things::top.read() || things::bottom.read());
 
@@ -132,6 +141,9 @@ void read() {
     count = 1 + count % steps;
 }
 
+/**
+ * @brief Draw game in screen and display
+ */
 void draw() {
     things::frame.set(block, true);
 
@@ -148,6 +160,11 @@ void draw() {
     }
 }
 
+/**
+ * @brief Verify collision
+ *
+ * @return Collision
+ */
 bool collision() {
     for (auto &part : block) {
         short line = part.get(true);
@@ -164,6 +181,9 @@ bool collision() {
     return false;
 }
 
+/**
+ * @brief Update positions
+ */
 void repos() {
     short shift = position - block[1].get(false);
 
@@ -205,6 +225,11 @@ void repos() {
     things::frame.set(block, true);
 }
 
+/**
+ * @brief Verify defeat
+ *
+ * @return Defeat
+ */
 bool verify() {
     if (count == steps) {
         if (collision()) {
@@ -221,6 +246,11 @@ bool verify() {
     return false;
 }
 
+/**
+ * @brief Update game state
+ *
+ * @param value Game level
+ */
 void update(int value) {
     level = value;
 
