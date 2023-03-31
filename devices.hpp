@@ -5,6 +5,11 @@
 #define DEVICES_HPP
 
 namespace devices {
+/**
+ * @class screen
+ * @brief Emulate a 8x8 led screen (MAX7219)
+ *
+ */
 class screen {
    private:
     const int input;
@@ -19,6 +24,13 @@ class screen {
     const byte test{0xF};
 
    public:
+    /**
+     * @brief Initialize screen
+     *
+     * @param input Input pin
+     * @param clock Clock pin
+     * @param load Load pin
+     */
     screen(int input, int clock, int load) : input(input), clock(clock), load(load) {
         pinMode(input, OUTPUT);
         pinMode(clock, OUTPUT);
@@ -33,6 +45,12 @@ class screen {
         clear();
     }
 
+    /**
+     * @brief Record data in an address in screen
+     *
+     * @param adress Address in screen
+     * @param data Data to be recorded
+     */
     void control(byte adress, byte data) const {
         digitalWrite(load, false);
         shiftOut(input, clock, MSBFIRST, adress);
@@ -40,6 +58,11 @@ class screen {
         digitalWrite(load, true);
     }
 
+    /**
+     * @brief Render a frame in screen
+     *
+     * @param pattern Frame to be rendered
+     */
     void render(const canvas::frame &pattern) const {
         short index = short();
 
@@ -48,10 +71,23 @@ class screen {
         }
     }
 
+    /**
+     * @brief Render a frame in screen
+     *
+     * @param pattern Frame to be rendered
+     */
     void render(const canvas::frame &&pattern) const { render(pattern); }
 
+    /**
+     * @brief Clear screen
+     */
     void clear() const { render(canvas::frame()); }
 
+    /**
+     * @brief Change screen brightness
+     *
+     * @param bright Bright value
+     */
     void brightness(byte bright) const {
         bright = map(bright, 0, 100, 1, 15);
 
@@ -59,6 +95,11 @@ class screen {
     }
 };
 
+/**
+ * @class display
+ * @brief Emulate a 4-digit 7-segment display (TM1637)
+ *
+ */
 class display {
    private:
     const int input;
@@ -72,6 +113,13 @@ class display {
     bool dots{false};
 
    public:
+    /**
+     * @brief Initialize display
+     *
+     * @param input Input pin
+     * @param clock Clock pin
+     * @param time Time pin
+     */
     display(int input, int clock, int time) : input(input), clock(clock), time(time) {
         pinMode(input, INPUT);
         pinMode(clock, INPUT);
@@ -80,13 +128,22 @@ class display {
         digitalWrite(clock, LOW);
     }
 
+    /**
+     * @brief Wait microseconds
+     */
     void wait() const { delayMicroseconds(time); }
 
+    /**
+     * @brief Start to writing data in display
+     */
     void start() const {
         pinMode(input, OUTPUT);
         wait();
     }
 
+    /**
+     * @brief Stop to writing data in display
+     */
     void stop() const {
         pinMode(input, OUTPUT);
         wait();
@@ -96,6 +153,11 @@ class display {
         wait();
     }
 
+    /**
+     * @brief Write data in display
+     *
+     * @param data Data to be writted
+     */
     void write(byte data) const {
         byte condition = 8;
 
@@ -133,6 +195,11 @@ class display {
         wait();
     }
 
+    /**
+     * @brief Render layer in display
+     *
+     * @param segments Layer to be rendered
+     */
     void render(const canvas::layer &segments) const {
         start();
         write(first);
@@ -154,12 +221,31 @@ class display {
         stop();
     }
 
+    /**
+     * @brief Render layer in display
+     *
+     * @param segments Layer to be rendered
+     */
     void render(const canvas::layer &&segments) const { render(segments); }
 
+    /**
+     * @brief Clear display
+     */
     void clear() const { render(canvas::layer()); }
 
+    /**
+     * @brief Enable separator
+     *
+     * @param value Enable value
+     */
     void separator(bool value) { dots = value; }
 
+    /**
+     * @brief Enable and set brightness in display
+     *
+     * @param bright Bright
+     * @param enable Enable
+     */
     void brightness(byte bright, bool enable = true) const {
         bright = map(bright, 0, 100, 0, 7);
 
@@ -175,6 +261,11 @@ class display {
     }
 };
 
+/**
+ * @class knob
+ * @brief Knob
+ *
+ */
 class knob {
    private:
     const int input;
@@ -182,12 +273,24 @@ class knob {
     int count;
 
    public:
+    /**
+     * @brief Initialize knob
+     *
+     * @param input Input pin
+     */
     knob(int input) : input(input) {
         pinMode(input, INPUT);
 
         count = 0;
     }
 
+    /**
+     * @brief Read knob position
+     *
+     * @param inferior Inferior range
+     * @param superior Superior range
+     * @return Position relative range
+     */
     int read(short inferior = 0, short superior = 100) {
         short value = analogRead(input);
 
@@ -195,13 +298,28 @@ class knob {
     }
 };
 
+/**
+ * @class button
+ * @brief Push Button
+ *
+ */
 class button {
    private:
     const int input;
 
    public:
+    /**
+     * @brief Initialize button
+     *
+     * @param input Input pin
+     */
     button(int input) : input(input) { pinMode(input, INPUT); }
 
+    /**
+     * @brief Read state button
+     *
+     * @return Button state (pressed or unpressed)
+     */
     bool read() const {
         bool value = digitalRead(input);
 
@@ -209,13 +327,29 @@ class button {
     }
 };
 
+/**
+ * @class buzzer
+ * @brief Buzzer (it does not really used in project)
+ *
+ */
 class buzzer {
    private:
     const int input;
 
    public:
+    /**
+     * @brief Initialize buzzer
+     *
+     * @param input Input pin
+     */
     buzzer(int input) : input(input) { pinMode(input, OUTPUT); }
 
+    /**
+     * @brief Play a square wave in a frequency by a time
+     *
+     * @param frequency Frequency
+     * @param duration Duration
+     */
     void start(int frequency, int duration = 0) {
         tone(input, frequency);
 
@@ -224,6 +358,9 @@ class buzzer {
         }
     }
 
+    /**
+     * @brief Stop playing
+     */
     void stop() { noTone(input); }
 };
 }  // namespace devices
