@@ -41,8 +41,8 @@ Here is the general controls, shared by all games:
 
 ```
 Potenciometers:
-  • A0: Control game level
-  • A1: Control displays bright
+    • A0: Control game level
+	• A1: Control displays bright
 ```
 
 ### Selector
