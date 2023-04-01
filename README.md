@@ -4,10 +4,12 @@ Arduino Arcade Emulator
 
 ## Games
 
-- Pong
-- Snake
-- Tetris
-- Space Invaders
+```
+• Pong
+• Snake
+• Tetris
+• Space Invaders
+```
 
 ## Components
 
@@ -25,13 +27,11 @@ All components is listed below:
 
 ## Schematic
 
+Below we have the project schematic in [wokwi](https://wokwi.com/projects/342904647547093587):
+
 <p align="center">
 	<img src="https://github.com/gauloish/arcade/blob/main/assets/schematic.png"/>
 </p> 
-
-## Compiling
-
-Sample
 
 ## Controls
 
