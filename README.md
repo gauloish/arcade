@@ -102,7 +102,7 @@ Buttons:
 
 Here is the Space Invaders controls:
 
-```cpp
+```python
 Potenciometers:
 	• A2: Move ship
 
