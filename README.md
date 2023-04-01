@@ -26,7 +26,7 @@ All components is listed below:
 ## Schematic
 
 <p align="center">
-	<img src="https://github.com/matheus-moreno/the-game/blob/main/images/cover.png"/>
+	<img src="https://github.com/matheus-moreno/arcade/blob/main/assets/schematic.png"/>
 </p> 
 
 ## Compiling
