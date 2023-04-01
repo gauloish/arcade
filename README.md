@@ -26,7 +26,7 @@ All components is listed below:
 ## Schematic
 
 <p align="center">
-	<img src="https://github.com/matheus-moreno/arcade/blob/main/assets/schematic.png"/>
+	<img src="https://github.com/gauloish/arcade/blob/main/assets/schematic.png"/>
 </p> 
 
 ## Compiling
