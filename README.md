@@ -13,7 +13,7 @@ Arduino Arcade Emulator
 
 All components is listed below:
 
-```cpp
+```
 • [1] Arduino Uno
 • [1] Display MAX7219
 • [1] Display TM1637
@@ -23,9 +23,11 @@ All components is listed below:
 • [-] Jumpers
 ```
 
-## Requirements
+## Schematic
 
-Sample
+<p align="center">
+	<img src="https://github.com/matheus-moreno/the-game/blob/main/images/cover.png"/>
+</p> 
 
 ## Compiling
 
