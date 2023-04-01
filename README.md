@@ -39,17 +39,17 @@ Each control is solely associated a pin in Arduino and each game have itself fun
 
 Here is the general controls, shared by all games:
 
-```cpp
+```
 Potenciometers:
-	• A0: Control game level
-	• A1: Control displays bright
+  • A0: Control game level
+  • A1: Control displays bright
 ```
 
 ### Selector
 
 Here is the selector controls:
 
-```cpp
+```
 Potenciometers:
 	• A2: Change game
 
@@ -64,7 +64,7 @@ Buttons:
 
 Here is the Pong controls:
 
-```cpp
+```
 Potenciometers:
 	• A2: Control left player
 	• A3: Control right player
@@ -74,7 +74,7 @@ Potenciometers:
 
 Here is the Snake controls:
 
-```cpp
+```
 Buttons:
 	• 10: Move snake to left
 	• 11: Move snake to down
@@ -86,7 +86,7 @@ Buttons:
 
 Here is the Tetris controls:
 
-```cpp
+```
 Potenciometers:
 	• A2: Move piece
 	• A3: Rotate piece
@@ -102,7 +102,7 @@ Buttons:
 
 Here is the Space Invaders controls:
 
-```python
+```
 Potenciometers:
 	• A2: Move ship
 
