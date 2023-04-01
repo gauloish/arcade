@@ -3,8 +3,6 @@
 #include "snake.hpp"
 #include "tetris.hpp"
 
-#include "paint.hpp"
-
 #include "things.hpp"
 #include "utils.hpp"
 
@@ -35,7 +33,12 @@ bool (*verified[])(void) = {
     invaders::verify  //
 };
 
-canvas::frame image[4] = {pong::image, snake::image, tetris::image, invaders::image};
+canvas::frame image[4] = {
+    pong::image,     //
+    snake::image,    //
+    tetris::image,   //
+    invaders::image  //
+};
 
 /**
  * @brief Change screen and display brightness
